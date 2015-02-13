@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="gameOfLife.css" type="text/css">
+		<script src="node_modules/jquery/dist/jquery.min.js"></script>
+		<script src="gameOfLife.js"></script>
+		<script type="text/javascript">
+			$(window).load(function() {
+				var game = new gameOfLife();
+				var currentGeneration = game.BigBang(50);
+
+				setInterval(function () {
+					setUp(currentGeneration);
+					currentGeneration = game.AdvanceAGeneration();
+				}, 100);
+
+				function setUp(currentGeneration) {
+					var city = $("#city");
+					city.empty();
+					city.append("<table>");
+					
+					for (var x = 0; x < currentGeneration.length; x++) {
+						city.append("<tr>");
+			
+						for (var y = 0; y < currentGeneration.length; y++) {
+							houseIsAlive = currentGeneration[x][y];
+							var tdClass;
+
+							if (houseIsAlive === 1)
+								tdClass = "alive";
+							else 
+								tdClass = "dead";
+
+							city.append("<td class=" + tdClass + "></td>");
+						}
+			
+						city.append("</tr>");
+					}
+
+					city.append("</table>");
+				}
+			});
+		</script>
+	</head>
+	<body>
+		<div id="city">
+		</div>
+	</body>
+</html>
