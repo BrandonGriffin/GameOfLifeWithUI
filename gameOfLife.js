@@ -3,9 +3,11 @@ function gameOfLife() {
 	var cityBlocks;
 
 	this.BigBang = function BigBang(seedSize) {
-	 cityBlocks = seedSize;
+		cityBlocks = seedSize;
+		
 		for (var x = 0; x < cityBlocks; x++) {
 			currentGeneration[x] = [];
+
 			for (var y = 0; y < cityBlocks; y++)
 				currentGeneration[x][y] = Math.round((Math.random() * 1));
 		}
@@ -13,23 +15,25 @@ function gameOfLife() {
 		return currentGeneration;
 	}
 
-	this.AdvanceAGeneration = function AdvanceAGeneration() {
-		var futureGeneration = currentGeneration;
-
+	this.AdvanceAGeneration = function AdvanceAGeneration(pastGeneration) {
+		currentGeneration = pastGeneration;
+		var futureGeneration = [];
+		
 		for (var x = 0; x < cityBlocks; x++) {
+			futureGeneration[x] = [];
 			for (var y = 0; y < cityBlocks; y++) {
-				var livingNeighbors = getLiveNeighbors(x, y);
+				var livingNeighbors = getLivingNeighbors(x, y);
 				var household = currentGeneration[x][y];
 
 				futureGeneration[x][y] = decideFateUsing(household, livingNeighbors);
 			}
 		}
 
-		currentGeneration = futureGeneration;
+		currentGeneration = futureGeneration.slice();
 		return currentGeneration;
 	} 
 
-	function getLiveNeighbors(x, y) {
+	function getLivingNeighbors(x, y) {
 		var livingNeighbors = 0;
 
 		if (topLeftNeighborIsAlive(x, y))
@@ -85,16 +89,16 @@ function gameOfLife() {
 	}
 
 	function decideFateUsing(household, livingNeighbors) {
-		if (currentGenerationIsAliveIn(household) && (livingNeighbors === 2 || livingNeighbors === 3))
+		if (livingNeighbors === 3)
 			return 1;
-		else if (livingNeighbors === 3)
+		if (currentGenerationIsAliveIn(household) && livingNeighbors === 2)
 			return 1;
-		else
-			return 0;
-		
+		return 0;
 	} 
 
 	function currentGenerationIsAliveIn(household) {
 		return household === 1;
 	}
 }
+
+exports.gameOfLife = gameOfLife;

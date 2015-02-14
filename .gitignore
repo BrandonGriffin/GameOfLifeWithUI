@@ -1,4 +1,6 @@
 .idea
+*.conf.js
+spec/
 bower_components
 MongoDB 2.6 Standard
 *MongoDB*

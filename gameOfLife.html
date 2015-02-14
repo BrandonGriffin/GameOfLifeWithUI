@@ -9,17 +9,16 @@
 				var currentGeneration = game.BigBang(50);
 
 				setInterval(function () {
+					currentGeneration = game.AdvanceAGeneration(currentGeneration);
 					setUp(currentGeneration);
-					currentGeneration = game.AdvanceAGeneration();
-				}, 100);
+				}, 250);
 
 				function setUp(currentGeneration) {
 					var city = $("#city");
-					city.empty();
-					city.append("<table>");
+					var households = "<table>";
 					
 					for (var x = 0; x < currentGeneration.length; x++) {
-						city.append("<tr>");
+						households += "<tr>";
 			
 						for (var y = 0; y < currentGeneration.length; y++) {
 							houseIsAlive = currentGeneration[x][y];
@@ -30,13 +29,14 @@
 							else 
 								tdClass = "dead";
 
-							city.append("<td class=" + tdClass + "></td>");
+							households += "<td class=" + tdClass + "></td>";
 						}
 			
-						city.append("</tr>");
+						households += "</tr>";
 					}
 
-					city.append("</table>");
+					households += "</table>";
+					city.html(households);
 				}
 			});
 		</script>
